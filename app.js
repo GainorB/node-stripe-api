@@ -29,6 +29,29 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+// CHARGE ROUTE
+app.post('/charge', (req, res) => {
+  const amount = 2500; // $25
+
+  const { stripeToken, stripeTokenType, stripeEmail } = req.body;
+
+  // CREATE THE CUSTOMER
+  stripe.customers
+    .create({
+      email: stripeEmail,
+      source: stripeToken
+    })
+    .then(customer =>
+      stripe.charges.create({
+        amount,
+        description: 'Web Development Ebook',
+        currency: 'usd',
+        customer: customer.id
+      })
+    )
+    .then(charge => res.render('success'));
+});
+
 // START SERVER
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
