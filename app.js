@@ -1,6 +1,7 @@
 require('dotenv').config();
+const keys = require('./config/keys');
 const express = require('express');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(keys.stripeSecretKey);
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const path = require('path');
@@ -26,7 +27,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // INDEX ROUTE
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', {
+    stripePublishableKey: keys.stripePublishableKey
+  });
 });
 
 // CHARGE ROUTE
