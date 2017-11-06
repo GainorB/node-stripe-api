@@ -52,7 +52,8 @@ app.post('/charge', (req, res) => {
         customer: customer.id
       })
     )
-    .then(charge => res.render('success'));
+    .then(charge => res.render('success'))
+    .catch(err => console.error(err));
 });
 
 // START SERVER
